@@ -7,7 +7,7 @@ struct Order {
   std::string details;
 };
 
-class Queue {
+class ArrayQueue {
 private:
   std::vector<Order> orders;
   size_t front_idx = 0; // Index of the front element in the queue
@@ -63,7 +63,7 @@ public:
 };
 
 int main() {
-  Queue queue;
+  ArrayQueue queue;
 
   // Add to queue
   queue.enqueue({ 1, "Pizza" });
@@ -71,7 +71,7 @@ int main() {
   queue.enqueue({ 3, "Sushi" });
 
   // Temporary copy of the queue to iterate through all orders
-  Queue tempQueue1 = queue;
+  ArrayQueue tempQueue1 = queue;
   std::cout << "Current orders in queue:" << std::endl;
   int position = 1;
   while (!tempQueue1.empty()) {
@@ -86,7 +86,7 @@ int main() {
   queue.cancel(2); // Remove Burger
 
   // Temporary copy of the queue to iterate through all orders
-  Queue tempQueue = queue;
+  ArrayQueue tempQueue = queue;
   std::cout << "Current orders in queue:" << std::endl;
   int position1 = 1;
   while (!tempQueue.empty()) {

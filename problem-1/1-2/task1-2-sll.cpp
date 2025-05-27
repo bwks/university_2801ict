@@ -6,7 +6,7 @@ struct Order {
   std::string details;
 };
 
-class Queue {
+class SllQueue {
 private:
   struct Node {
     Order order;
@@ -19,9 +19,9 @@ private:
   int size;
 
 public:
-  Queue() : front(nullptr), rear(nullptr), size(0) {}
+  SllQueue() : front(nullptr), rear(nullptr), size(0) {}
 
-  ~Queue() {
+  ~SllQueue() {
     while (!empty()) {
       dequeue();
     }
@@ -40,21 +40,21 @@ public:
   }
 
   Order dequeue() {
-    if (empty()) {
-      throw std::runtime_error("Queue is empty");
+    if (!empty()) {
+      Node* temp = front;
+      Order item = front->order;
+      front = front->next;
+
+      if (front == nullptr) {
+        rear = nullptr;
+      }
+
+      delete temp;
+      size--;
+      return item;
     }
-
-    Node* temp = front;
-    Order item = front->order;
-    front = front->next;
-
-    if (front == nullptr) {
-      rear = nullptr;
-    }
-
-    delete temp;
-    size--;
-    return item;
+    // Return default Order when queue is empty
+    return { -1, "" };
   }
 
   Order peek() const {
@@ -105,7 +105,7 @@ public:
 
 // Example usage
 int main() {
-  Queue queue;
+  SllQueue queue;
 
   queue.enqueue({ 1, "Cheeseburger" });
   queue.enqueue({ 2, "Fries" });

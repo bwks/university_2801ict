@@ -1,5 +1,4 @@
 #include <iostream>
-#include <stdexcept>
 #include <string>
 
 struct Order {
@@ -7,7 +6,7 @@ struct Order {
   std::string details;
 };
 
-class Queue {
+class DllQueue {
 private:
   struct Node {
     Order order;
@@ -21,9 +20,9 @@ private:
   int size;
 
 public:
-  Queue() : front(nullptr), rear(nullptr), size(0) {}
+  DllQueue() : front(nullptr), rear(nullptr), size(0) {}
 
-  ~Queue() {
+  ~DllQueue() {
     Node* current = front;
     while (current) {
       Node* next = current->next;
@@ -47,29 +46,28 @@ public:
   }
 
   Order dequeue() {
-    if (empty()) {
-      throw std::runtime_error("Queue is empty");
-    }
+    if (!empty()) {
+      Node* temp = front;
+      Order item = front->order;
 
-    Node* temp = front;
-    Order item = front->order;
+      if (front == rear) {
+        front = rear = nullptr;
+      }
+      else {
+        front = front->next;
+        front->prev = nullptr;
+      }
 
-    if (front == rear) {
-      front = rear = nullptr;
+      delete temp;
+      size--;
+      return item;
     }
-    else {
-      front = front->next;
-      front->prev = nullptr;
-    }
-
-    delete temp;
-    size--;
-    return item;
+    throw std::runtime_error("Cannot dequeue from an empty queue");
   }
 
   Order peek() const {
-    if (empty()) {
-      throw std::runtime_error("Queue is empty");
+    if (!empty()) {
+      throw std::runtime_error("Cannot peek from an empty queue");
     }
     return front->order;
   }
@@ -97,13 +95,17 @@ public:
   }
 
   bool empty() const {
-    return front == nullptr;
+    bool nada = front == nullptr;
+    if (nada) {
+      std::cout << "Queue is empty" << std::endl;
+    }
+    return nada;
   }
 };
 
 // Example usage with direct references
 int main() {
-  Queue queue;
+  DllQueue queue;
 
   // Enqueue orders and store their node references
   queue.enqueue({ 1, "Pizza" });
